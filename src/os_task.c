@@ -103,7 +103,7 @@ void os_task_init( void ) {
 
 /************************************************************** *******************/
 /*  uint8_t task_create( taskproctype taskproc, void *data, uint8_t prio, Msg_t *msgPool, uint8_t poolSize, uint16_t msgSize )    *//**
-*   
+*
 *   Creates a task scheduled by the os. The task is put in the ready state.
 *
 *   @param taskproc Function pointer to the task procedure.
@@ -128,7 +128,7 @@ int main(void) {
 	...
 }
 @endcode
-*       
+*
 */
 /*********************************************************************************/
 uint8_t task_create( taskproctype taskproc, void *data, uint8_t prio, Msg_t *msgPool, uint8_t poolSize, uint16_t msgSize ) {
@@ -145,9 +145,9 @@ uint8_t task_create( taskproctype taskproc, void *data, uint8_t prio, Msg_t *msg
     while ( taskId != 0 ) {
         --taskId;
         os_assert( task_list[ taskId ].prio != prio );
-    } 
-    
-    
+    }
+
+
     task = &task_list[ nTasks ];
 
     task->tid = nTasks;
@@ -168,7 +168,7 @@ uint8_t task_create( taskproctype taskproc, void *data, uint8_t prio, Msg_t *msg
 
     task->data = data;
     os_task_clear_wait_queue( nTasks );
-    
+
     nTasks++;
     return task->tid;
 }
@@ -184,8 +184,8 @@ TaskState_t task_state_get( uint8_t tid ) {
 
 /*********************************************************************************/
 /*  void task_kill( uint8_t task_id )                                   *//**
-*   
-*   Puts the task associated with the specified id in the killed state. 
+*
+*   Puts the task associated with the specified id in the killed state.
 *   A killed task, cannot be resumed.
 *
 *   @param task_id id of the task.
@@ -212,10 +212,10 @@ static void waitingTask(void)
 
 static void signalingTask1(void)
 {
-	task_open();	
-	
+	task_open();
+
 	task_wait( 900 );
-       
+
     event_signal(event);
 
 	task_close();
@@ -228,7 +228,7 @@ int main() {
    ...
 }
 *		@endcode
-*       
+*
 */
 /*********************************************************************************/
 void task_kill( uint8_t tid ) {
@@ -279,7 +279,7 @@ uint8_t os_task_highest_prio_ready_task( void ) {
     uint8_t highest_prio = 255;
     TaskState_t state;
     uint8_t prio;
-    
+
     for ( index = 0; index != nTasks; ++index ) {
         task = &task_list[ index ];
         prio = task->prio;
@@ -302,7 +302,7 @@ uint8_t os_task_next_ready_task( void ) {
     uint16_t index;
     uint8_t found;
     uint8_t nChecked;
-    
+
     if ( NO_TID == last_running_task ) {
         index = 0;
     }
@@ -312,33 +312,33 @@ uint8_t os_task_next_ready_task( void ) {
             index = 0;
         }
     }
-    
+
     found = 0;
     nChecked = 0;
-    
+
     do {
         if ( READY == task_list[ index ].state ) {
             last_running_task = index;
             found = 1;
             break;
         }
-        
+
         ++index;
         if ( index == nTasks ) {
             index = 0;
         }
     } while ( ++nChecked != nTasks );
-    
+
     if ( !found ) {
         last_running_task = NO_TID;
     }
-    
+
     return last_running_task;
 }
 
 /* Finds the task with highest prio waiting for sem, and makes it ready to run */
 void os_task_release_waiting_task( Sem_t sem ) {
-    
+
 #if (ROUND_ROBIN)
 	  uint32_t longestWaitTime = 0;
     uint8_t lastCheckedTask = NO_TID;
@@ -370,7 +370,7 @@ void os_task_release_waiting_task( Sem_t sem ) {
                     foundTask = tid;
                 }
 			#endif
-        } 
+        }
     }
 
     /* We have found a waiting task. */
@@ -379,7 +379,7 @@ void os_task_release_waiting_task( Sem_t sem ) {
 			/* All waiting tasks had waiting time 0 -> release the last task */
 			foundTask = lastCheckedTask;
 		}
-	#endif			
+	#endif
     if ( NO_TID != foundTask ) {
         task_list[ foundTask ].state = READY;
     }
@@ -411,7 +411,7 @@ uint8_t os_task_waiting_this_semaphore( Sem_t sem ) {
 void os_task_wait_sem_set( uint8_t tid, Sem_t sem ) {
     os_assert( tid < nTasks );
     task_wait_sem_set( tid, sem );
-	
+
 	/* The time is ticked to measure waiting time */
 	task_list[ tid ].time = 0;
 }
@@ -430,7 +430,7 @@ void os_task_suspend( uint8_t tid ) {
     os_assert( tid < nTasks );
 
     state = task_list[ tid ].state;
-    
+
     if (( state != KILLED ) && ( state != SUSPENDED )){
         /* If a task is waiting for a semaphore when beeing suspended, there is a risk      */
         /* that the semaphore will be signaled while the task is suspended, and if the task */
@@ -450,7 +450,7 @@ void os_task_suspend( uint8_t tid ) {
 
 
 void os_task_resume( uint8_t tid ) {
-    
+
     os_assert( tid < nTasks );
 
     if ( task_list[ tid ].state == SUSPENDED ) {
@@ -469,7 +469,7 @@ void os_task_kill( uint8_t tid ) {
 uint8_t os_task_prio_get( uint8_t tid ) {
     os_assert( tid < nTasks );
     return task_list[ tid ].prio;
-    
+
 }
 
 
@@ -487,7 +487,7 @@ void os_task_clear_wait_queue( uint8_t tid ) {
         --event;
         task->eventQueue.eventList[ event ] = 0;
     } while ( event != 0 );
-    
+
 }
 
 
@@ -505,7 +505,7 @@ static uint8_t os_task_wait_queue_empty( uint8_t tid ) {
             result = 0;
         }
     } while ( event != 0 );
-        
+
 
     return result;
 }
@@ -514,7 +514,7 @@ static uint8_t os_task_wait_queue_empty( uint8_t tid ) {
 void os_task_wait_time_set( uint8_t tid, uint8_t id, uint32_t time ) {
     os_assert( tid < nTasks );
     os_assert( time > 0 );
-    
+
     task_list[ tid ].clockId = id;
     task_list[ tid ].time = time;
     task_waiting_time_set( tid );
@@ -525,7 +525,7 @@ void os_task_wait_event( uint8_t tid, Evt_t eventId, uint8_t waitSingleEvent, ui
     uint8_t eventListIndex;
     uint8_t shift;
     tcb *task;
-    
+
     os_assert( tid < nTasks );
 
     task = &task_list[ tid ];
@@ -541,15 +541,15 @@ void os_task_wait_event( uint8_t tid, Evt_t eventId, uint8_t waitSingleEvent, ui
     task->time = timeout;
     task_waiting_event_timeout_set( task );
 	}
-	else {	
+	else {
 		task_waiting_event_set( task );
-	}	
+	}
 }
 
 
 void os_task_tick( uint8_t id, uint32_t tickSize ) {
     uint8_t index;
-    
+
     /* Search all tasks and decrement time for waiting tasks */
     for ( index = 0; index != nTasks; ++index ) {
 		TaskState_t state;
@@ -585,7 +585,7 @@ void os_task_tick( uint8_t id, uint32_t tickSize ) {
 
 void os_task_signal_event( Evt_t eventId ) {
     uint8_t index;
-    
+
     uint8_t eventListIndex;
     uint8_t shift;
 
@@ -603,7 +603,7 @@ void os_task_signal_event( Evt_t eventId ) {
       if (( state == WAITING_EVENT ) || ( state == WAITING_EVENT_TIMEOUT )) {
           taskWaitStateOK = 1;
       }
-            
+
       taskWaitingForEvent = task_list[ index ].eventQueue.eventList[eventListIndex] & (1<<shift);
 
       if ( taskWaitingForEvent  &&  taskWaitStateOK ) {

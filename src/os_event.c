@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 #include "cocoos.h"
 #include "stdarg.h"
@@ -64,7 +64,7 @@ void os_event_init(void) {
 
 /*********************************************************************************/
 /*  Evt_t event_create()                                              *//**
-*   
+*
 *   Creates an event.
 *
 *   @return Returns an event.
@@ -75,7 +75,7 @@ void os_event_init(void) {
 *   Evt_t myEvent;
 *   myEvent = event_create();
 *   @endcode
-*       
+*
 *		 */
 /*********************************************************************************/
 Evt_t event_create( void ) {
@@ -84,7 +84,7 @@ Evt_t event_create( void ) {
 
     eventList[ nEvents ].id = nEvents;
     eventList[ nEvents ].signaledByTid = NO_TID;
-	
+
 	++nEvents;
 
 	return nEvents - 1;
@@ -96,9 +96,9 @@ Evt_t event_create( void ) {
 
 /*********************************************************************************/
 /*  uint8_t event_signaling_taskId_get( ev )                                              *//**
-*   
+*
 *   Gets the Task Id of the task that signaled the event.
-*   
+*
 *   @param ev event
 *   @return Id of task that signaled the event.
 *   @return NO_TID if a timeout occurred before the event was signaled.
@@ -114,7 +114,7 @@ Evt_t event_create( void ) {
 *     ...
 *   }
 *   @endcode
-*       
+*
 *		 */
 /*********************************************************************************/
 uint8_t event_signaling_taskId_get( Evt_t ev ) {

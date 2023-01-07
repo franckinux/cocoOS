@@ -69,7 +69,7 @@ static MsgQ_t nQueues;
 
 
 void os_msgQ_init() {
-    
+
 #if( N_QUEUES > 0 )
     uint8_t i;
     nQueues = 0;
@@ -264,7 +264,7 @@ void os_msgQ_tick( MsgQ_t queue ) {
         nextMessage = (nextMessage + 1) % q->size;
 
     }
-#endif    
+#endif
 }
 
 
@@ -283,7 +283,7 @@ static uint8_t MsgQAllDelayed(OSQueue_t *q) {
 
     while ( nextMessage != head ) {
         pMsg = (Msg_t*)( (Mem_t)q->list + (nextMessage * msgSz) );
-        
+
         if ( pMsg->delay == 0 ) {
             result = 0;
             break;

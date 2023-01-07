@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 
 #include "cocoos.h"
@@ -44,11 +44,11 @@ void os_on_assert(const char* file, uint16_t line, const char* expr) {
     os_disable_interrupts();
     l = line;
     l = l;
- 
+
     if (0 != user_callback) {
       user_callback(file, line, expr);
     }
- 
+
     while(1);
 }
 

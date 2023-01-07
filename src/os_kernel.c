@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 
 #include "cocoos.h"
@@ -45,7 +45,7 @@ uint8_t running;
 
 /*********************************************************************************/
 /*  void os_init()                                              *//**
-*   
+*
 *   Initializes the scheduler.
 *   @return None.
 *   @remarks \b Usage: @n Should be called early in system setup, before starting the task
@@ -58,7 +58,7 @@ uint8_t running;
 *   ...
 *   }
 *   @endcode
-*       
+*
 *		 */
 /*********************************************************************************/
 void os_init( void ) {
@@ -83,9 +83,9 @@ static void os_schedule( void ) {
     running_tid = os_task_next_ready_task();
 #else
     /* Find the highest prio task ready to run */
-    running_tid = os_task_highest_prio_ready_task();   
+    running_tid = os_task_highest_prio_ready_task();
 #endif
-    
+
     if ( running_tid != NO_TID ) {
         os_task_run();
     }
@@ -99,7 +99,7 @@ static void os_schedule( void ) {
 
 /*********************************************************************************/
 /*  void os_start()                                              *//**
-*   
+*
 *   Starts the task scheduling
 *
 *   @return None.
@@ -115,7 +115,7 @@ static void os_schedule( void ) {
 *     return 0;
 *   }
 *   @endcode
-*       
+*
 */
 /*********************************************************************************/
 void os_start( void ) {
@@ -130,7 +130,7 @@ void os_start( void ) {
 
 /*********************************************************************************/
 /*  void os_tick()                                              *//**
-*   
+*
 *   Tick function driving the kernel
 *
 *   @return None.
@@ -143,7 +143,7 @@ void os_start( void ) {
 *   }
 *
 *   @endcode
-*       
+*
 */
 /*********************************************************************************/
 void os_tick( void ) {
@@ -154,7 +154,7 @@ void os_tick( void ) {
 
 /*********************************************************************************/
 /*  void os_sub_tick( id )                                              *//**
-*   
+*
 *   Tick function driving the sub clocks
 *
 *   @param id sub clock id, allowed range 1-255
@@ -170,7 +170,7 @@ void os_tick( void ) {
 *   }
 *
 *   @endcode
-*       
+*
 */
 /*********************************************************************************/
 void os_sub_tick( uint8_t id ) {
@@ -183,7 +183,7 @@ void os_sub_tick( uint8_t id ) {
 
 /*********************************************************************************/
 /*  void os_sub_nTick( id, nTicks )                                              *//**
-*   
+*
 *   Tick function driving the sub clocks. Increments the tick count with nTicks.
 *
 *   @param id sub clock id, allowed range 1-255.
@@ -199,7 +199,7 @@ void os_sub_tick( uint8_t id ) {
 *   }
 *
 *   @endcode
-*       
+*
 */
 /*********************************************************************************/
 void os_sub_nTick( uint8_t id, uint32_t nTicks ) {

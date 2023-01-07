@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 
 #include "cocoos.h"
@@ -40,7 +40,7 @@
 
 typedef struct {
     uint8_t maxValue;
-    uint8_t value;    
+    uint8_t value;
 } SemValue_t;
 
 
@@ -49,7 +49,7 @@ static Sem_t os_sem_create( uint8_t max, uint8_t initial );
 #if ( N_TOTAL_SEMAPHORES > 0 )
 static SemValue_t semList[ N_TOTAL_SEMAPHORES ];
 static Sem_t nSemaphores;
-#endif							   
+#endif
 
 void os_sem_init(void) {
 #if ( N_TOTAL_SEMAPHORES > 0 )
@@ -76,7 +76,7 @@ static Sem_t os_sem_create( uint8_t max, uint8_t initial ) {
 
 /*********************************************************************************/
 /*  Sem_t sem_bin_create(uint8_t initial)                                              *//**
-*   
+*
 *   Creates and initializes a new binary semaphore.
 *
 *   @param initial value of the semaphore
@@ -89,7 +89,7 @@ static Sem_t os_sem_create( uint8_t max, uint8_t initial ) {
 *   mySem = sem_bin_create(0);
 *
 *   @endcode
-*       
+*
 *		 */
 /*********************************************************************************/
 Sem_t sem_bin_create( uint8_t initial ) {
@@ -100,7 +100,7 @@ Sem_t sem_bin_create( uint8_t initial ) {
 
 /*********************************************************************************/
 /*  Sem_t sem_counting_create(uint8_t max, uint8_t initial)                                              *//**
-*   
+*
 *   Creates and initializes a new counting semaphore.
 *
 *   @param max value of the semaphore
@@ -114,7 +114,7 @@ Sem_t sem_bin_create( uint8_t initial ) {
 *   mySem = sem_counting_create(5,0);
 *
 *   @endcode
-*       
+*
 *		 */
 /*********************************************************************************/
 Sem_t sem_counting_create( uint8_t max, uint8_t initial ) {
