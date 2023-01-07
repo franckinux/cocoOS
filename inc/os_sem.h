@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 #ifndef OS_SEM_H
 #define OS_SEM_H
@@ -48,7 +48,7 @@ extern "C" {
 #define SEM_OFS1 20000
 #define SEM_OFS2 21000
 
-#define OS_WAIT_SEM(sem)		do {\
+#define OS_WAIT_SEM(sem)        do {\
                                     if ( os_sem_larger_than_zero( sem )  ){\
                                         os_sem_decrement( sem );\
                                     }\

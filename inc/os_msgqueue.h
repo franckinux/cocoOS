@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 
 #ifndef OS_MSGQUEUE_H__
@@ -95,8 +95,8 @@ enum {
                                                                     }\
                                                                 } while ( os_posted == MSG_QUEUE_FULL );\
                                                                 if ( MSG_QUEUE_POSTED == os_posted ) {\
-                                                                	os_signal_event(event);\
-                                                                	os_event_set_signaling_tid( event, running_tid );\
+                                                                    os_signal_event(event);\
+                                                                    os_event_set_signaling_tid( event, running_tid );\
                                                                 }\
                                                             } while(0)
 
@@ -114,7 +114,7 @@ enum {
                                                         os_received = os_msg_receive((Msg_t*)pMsg, os_msgQ_find(task_id));\
                                                         if ( os_received == MSG_QUEUE_EMPTY ){\
                                                             if ( async == 0 ) {\
-       	                                                        os_task_set_msg_result(running_tid, os_received);\
+                                                                   os_task_set_msg_result(running_tid, os_received);\
                                                                 if (cb) {\
                                                                  ((void (*)())cb)();\
                                                                 }\
@@ -129,9 +129,9 @@ enum {
                                                         }\
                                                     } while ( os_received == MSG_QUEUE_EMPTY );\
                                                     if ( MSG_QUEUE_RECEIVED == os_received) {\
-                                                    	os_signal_event(event);\
-                                                    	os_event_set_signaling_tid(event, running_tid );\
-													}\
+                                                        os_signal_event(event);\
+                                                        os_event_set_signaling_tid(event, running_tid );\
+                                                    }\
                                                 } while(0)
 
 

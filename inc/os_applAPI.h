@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 #ifndef _os_applapi_h__
 #define _os_applapi_h__
@@ -47,74 +47,74 @@ extern "C" {
 /** @file os_applAPI.h cocoOS API header file*/
 /*********************************************************************************/
 /*  task_open()                                                 *//**
-*   
+*
 *   Macro for definition of task beginning.
 *
 *   @remarks \b Usage: Should be placed at the beginning of the task procedure @n
-* @code 
+* @code
 
 
 static void myTask(void) {
  static uint8_t i;
- task_open();	
+ task_open();
   ...
   task_wait( 10 );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_open()                 OS_BEGIN
 
 
 /*********************************************************************************/
 /*  task_close()                                                 *//**
-*   
+*
 *   Macro for definition of task end.
 *   @remarks \b Usage: Should be placed at the end of the task procedure @n
-* @code 
+* @code
 
 
 static void myTask(void) {
  static uint8_t i;
- task_open();	
+ task_open();
   ...
   task_wait( 10 );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_close()                OS_END
 
 
 /*********************************************************************************/
 /*  task_wait(x)                                                 *//**
-*   
+*
 *   Macro for suspending a task a specified amount of ticks of the master clock.
 *   When the wait time has expired, the task is ready to execute again and will continue
 *   at the next statement when the task is scheduled to run.
 *
 *   @param x Number of master clock ticks to wait.
 *   @remarks \b Usage: @n
-* @code 
+* @code
 
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   task_wait( 10 );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_wait(x)                OS_WAIT_TICKS(x,0)
 
 
 /*********************************************************************************/
 /*  task_wait_id(id,x)                                                 *//**
-*   
+*
 *   Macro for suspending a task a specified amount of ticks of a sub clock.
 *   When the wait time has expired, the task is ready to execute again and will continue
 *   at the next statement when the task is scheduled to run.
@@ -122,24 +122,24 @@ static void myTask(void) {
 *   @param id Sub clock id. Valid range 1-255.
 *   @param x Number of sub clock ticks to wait, 32 bit value.
 *   @remarks \b Usage: @n
-* @code 
+* @code
 
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   task_wait_id( 2, 10 );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_wait_id(id,x)                OS_WAIT_TICKS(x,id)
 
 
 /*********************************************************************************/
 /*  task_suspend( id )                                                 *//**
-*   
+*
 *   Macro for suspending a task
 *
 *   @param id of the task to suspend
@@ -147,17 +147,17 @@ static void myTask(void) {
 *   task is immediately suspended and other tasks are scheduled to execute.
 *   If the task to suspend is another than the current task, that task is immediately put
 *   in suspended state, and the current task continues to execute. @n \b Usage: @n
-* @code 
+* @code
 
 static Msg_t msgPool[ POOL_SIZE ];
 uint8_t task1_id;
 uint8_t task2_id;
 
 static void led_task(void) {
- task_open();	
+ task_open();
   for(;;) {
-	led_toggle();
-	task_wait( 100 );
+    led_toggle();
+    task_wait( 100 );
   }
  task_close();
 }
@@ -179,32 +179,32 @@ int main( void ) {
     ...
     task1_id = task_create( led_task, 1, msgPool, POOL_SIZE, sizeof(Msg_t) );
     task2_id = task_create( button_task, 2, NULL, 0, 0 );
-	...
+    ...
 }
 
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_suspend( id )    OS_SUSPEND_TASK( id )
 
 
  /*********************************************************************************/
 /*  task_resume(id)                                                 *//**
-*   
+*
 *   Macro for resuming a task
 *
 *   @param id of the task to resume
 *   @remarks The macro has no effect if the task is not in the SUSPENDED state.
 *   If the task was waiting for a semaphore when it was suspended, the task will be reset and
 *   execution will restart from the task procedure top.@n \b Usage: @n
-* @code 
+* @code
 
 uint8_t ledTask_id;
 
 static void led_task(void) {
- task_open();	
+ task_open();
   for(;;) {
-	led_toggle();
-	task_wait( 100 );
+    led_toggle();
+    task_wait( 100 );
   }
  task_close();
 }
@@ -225,25 +225,25 @@ static void button_task(void) {
 
 
 int main( void ) {
-	...
-	ledTask_id = task_create( led_task, 1, msgPool, POOL_SIZE, sizeof(Msg_t) );
+    ...
+    ledTask_id = task_create( led_task, 1, msgPool, POOL_SIZE, sizeof(Msg_t) );
     task_create( button_task, 2, NULL, 0, 0 );
-	...
+    ...
 }
 
- @endcode 
+ @endcode
  *******************************************************************************/
 #define task_resume( id )     OS_RESUME_TASK( id )
 
 
 /*********************************************************************************/
 /*  event_wait(event)                                                 *//**
-*   
+*
 *   Macro for wait for a single event.
 *
 *   @param event: the event to wait for
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Evt_t myEvent;
 main() {
  ...
@@ -252,13 +252,13 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   event_wait( myEvent );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define event_wait(event)    OS_WAIT_SINGLE_EVENT(event,0,0)
 #define event_wait_ex(event, cb)    OS_WAIT_SINGLE_EVENT(event,0,cb)
@@ -266,7 +266,7 @@ static void myTask(void) {
 
 /*********************************************************************************/
 /*  event_wait_timeout(event,timeout)                                                 *//**
-*   
+*
 *   Macro for wait for a single event to be signaled or a timeout to occur.
 *
 *   @param event: the event to wait for
@@ -274,7 +274,7 @@ static void myTask(void) {
 *   no timeout will be used, and the task will wait forever until the event is signaled.
 *
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Evt_t myEvent;
 main() {
  ...
@@ -283,13 +283,13 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   event_wait_timeout( myEvent, 100 );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define event_wait_timeout(event,timeout)    OS_WAIT_SINGLE_EVENT(event,timeout,0)
 #define event_wait_timeout_ex(event,timeout,cb)    OS_WAIT_SINGLE_EVENT(event,timeout,cb)
@@ -329,12 +329,12 @@ static void myTask(void) {
 
 /*********************************************************************************/
 /*  event_wait_multiple(waitAll, args...)                                                 *//**
-*   
+*
 *   Macro for wait for multiple events.
 *   @param waitAll 1 if wait for all, 0 if wait for any event
 *   @param args list of Evt_t type events
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Evt_t myEvent1;
 Evt_t myEvent2;
 Evt_t myEvent3;
@@ -347,25 +347,25 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   event_wait_multiple(1, myEvent1, myEvent2, myEvent3);
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define event_wait_multiple(waitAll, args...)   OS_WAIT_MULTIPLE_EVENTS( waitAll, args)
 
 
 /*********************************************************************************/
 /*  event_signal(event)                                                 *//**
-*   
+*
 *   Macro for signalling an event.
 *
 *   @param event: the event to be signalled
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Evt_t myEvent;
 main() {
  ...
@@ -374,25 +374,25 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   event_signal( myEvent );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define event_signal(event) OS_SIGNAL_EVENT(event)
 
 
 /*********************************************************************************/
 /*  event_ISR_signal(event)                                                 *//**
-*   
+*
 *   Macro for signalling an event from an ISR
 *
 *   @param event: the event to be signalled
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Evt_t evRxChar;
 main() {
  ...
@@ -400,23 +400,23 @@ main() {
  ...
 }
 
-ISR (SIG_UART_RECV) {   
+ISR (SIG_UART_RECV) {
     rx.data[ rx.head ] = UDR;
     event_ISR_signal( evRxChar );
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define event_ISR_signal(event) OS_INT_SIGNAL_EVENT(event)
 
 
 /*********************************************************************************/
 /*  sem_wait(sem)                                                 *//**
-*   
+*
 *   Macro for aquiring a semaphore.
 *
 *   @param sem Semaphore.
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Sem_t mySem;
 main() {
  ...
@@ -425,25 +425,25 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   sem_wait( mySem );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define sem_wait(sem)  OS_WAIT_SEM(sem)
 
 
 /*********************************************************************************/
 /*  sem_signal(sem)                                                 *//**
-*   
+*
 *   Macro for releasing a semaphore.
 *
 *   @param sem Semaphore.
 *   @remarks \b Usage: @n
-* @code 
+* @code
 Sem_t mySem;
 main() {
  ...
@@ -452,13 +452,13 @@ main() {
 }
 
 static void myTask(void) {
- task_open();	
+ task_open();
   ...
   sem_signal( mySem );
   ...
  task_close();
 }
- @endcode 
+ @endcode
  *******************************************************************************/
 #define sem_signal(sem)     OS_SIGNAL_SEM(sem)
 
@@ -495,7 +495,7 @@ ISR(void) {
 
 /*********************************************************************************/
 /*  msg_post(task_id, msg)                                            *//**
-*   
+*
 *   Posts a message to the message queue of a task.
 *   @param task_id id of the task that will receive the message
 *   @param msg the message to post
@@ -511,7 +511,7 @@ typedef struct {
     uint8_t led;
 } LedMsg_t;
 
- 
+
 static LedMsg_t msgpool_1[ 16 ];
 static uint8_t taskId1;
 static uint8_t taskId2;
@@ -532,11 +532,11 @@ static void task1(void) {
 
     ledMsg.super.signal = LED_SIG;
     ledMsg.led = 5;
-    
+
     task_open();
-    
+
     for (;;) {
-        
+
         task_wait( 3000 );
 
         msg_post( taskId2, ledMsg );
@@ -546,10 +546,10 @@ static void task1(void) {
     task_close();
 
 }
- @endcode 
-*		
+ @endcode
+*
 
-*       
+*
 */
 /*********************************************************************************/
 #define msg_post(task_id, msg)   OS_MSG_Q_POST(task_id, msg, 0, 0, 0)
@@ -619,7 +619,7 @@ static void task1(void) {
 
 /*********************************************************************************/
 /*  msg_post_in(task_id, msg, delay)                                            *//**
-*   
+*
 *   Posts a message to the message queue of a task. The message will be received
 *   by the receiver task when the delay has expired. The delay is related to the master
 *   clock.
@@ -637,7 +637,7 @@ typedef struct {
     uint8_t led;
 } LedMsg_t;
 
- 
+
 static LedMsg_t msgpool_1[ 16 ];
 static uint8_t taskId1;
 static uint8_t taskId2;
@@ -658,11 +658,11 @@ static void task1(void) {
 
     ledMsg.super.signal = LED_SIG;
     ledMsg.led = 5;
-    
+
     task_open();
-    
+
     for (;;) {
-        
+
         task_wait( 3000 );
 
         msg_post_in( taskId2, ledMsg, 100 );
@@ -672,10 +672,10 @@ static void task1(void) {
     task_close();
 
 }
- @endcode 
-*		
+ @endcode
+*
 
-*       
+*
 */
 /*********************************************************************************/
 #define msg_post_in(task_id, msg, delay)   OS_MSG_Q_POST(task_id, msg, delay, 0, 0)
@@ -683,7 +683,7 @@ static void task1(void) {
 
 /*********************************************************************************/
 /*  msg_post_every(task_id, msg, period)                                            *//**
-*   
+*
 *   Posts a periodic message to the message queue of a task. The message will be delivered
 *   to the receiver task each time the timer expires. The period is related to the master
 *   clock.
@@ -700,7 +700,7 @@ typedef struct {
     uint8_t led;
 } LedMsg_t;
 
- 
+
 static LedMsg_t msgpool_1[ 16 ];
 static uint8_t taskId1;
 static uint8_t taskId2;
@@ -723,9 +723,9 @@ static void task1(void) {
     ledMsg.led = 5;
 
     msg_post_every( taskId2, ledMsg, 100 );
-  
+
     task_open();
-    
+
     for (;;) {
         ...
         ...
@@ -735,10 +735,10 @@ static void task1(void) {
     task_close();
 
 }
- @endcode 
-*		
+ @endcode
+*
 
-*       
+*
 */
 /*********************************************************************************/
 #define msg_post_every(task_id, msg, period)   OS_MSG_Q_POST(task_id, msg, period, period, 0)
@@ -746,8 +746,8 @@ static void task1(void) {
 
 /*********************************************************************************/
 /*  msg_receive( task_id, pMsg )                                            *//**
-*   
-*   Receives a message from the queue 
+*
+*   Receives a message from the queue
 *
 *   @param task_id id of the current task
 *   @param pMsg pointer to a message that will receive a message from the queue
@@ -765,7 +765,7 @@ typedef struct {
     uint8_t led;
 } LedMsg_t;
 
- 
+
 static LedMsg_t msgpool_1[ 16 ];
 static uint8_t taskId1;
 static uint8_t taskId2;
@@ -785,22 +785,22 @@ static void task2(void) {
     static LedMsg_t msg;
     uint8_t led;
     task_open();
-    
+
     for (;;) {
-        
+
         msg_receive( taskId2, &msg );
 
         if ( msg.super.signal == LED_SIG ) {
             led = msg.led;
             LED_TOGGLE( led );
-        } 
+        }
     }
 
     task_close();
 
 }
- @endcode 
-*       
+ @endcode
+*
 */
 /*********************************************************************************/
 #define msg_receive( task_id, pMsg )        OS_MSG_Q_RECEIVE( task_id, pMsg, 0, 0 )
@@ -860,7 +860,7 @@ static void task2(void) {
             LED_TOGGLE( led );
         }
         else if ( msg.super.signal == NO_MSG_ID ) {
-            
+
         }
     }
 

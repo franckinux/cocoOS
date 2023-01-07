@@ -1,6 +1,6 @@
 /** @file docTasks.h
-<b> Tasks </b> @n 
-The main building block of your application is the task. The tasks should be created in the main 
+<b> Tasks </b> @n
+The main building block of your application is the task. The tasks should be created in the main
 function of the application before starting the os. The number of created tasks must not exceed
 the defined value N_TASKS in os_defines.h. A task is created this way:
 @code

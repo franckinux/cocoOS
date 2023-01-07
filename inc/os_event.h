@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 #ifndef OS_EVENT_H
 #define OS_EVENT_H
@@ -50,39 +50,39 @@ extern "C" {
 #define EVENT_OFS2   11000
 #define EVENT_OFS3   12000
 
-#define OS_WAIT_SINGLE_EVENT(x,timeout, cb)	do {\
-								os_wait_event(running_tid,x,1,timeout, cb);\
-								OS_SCHEDULE(EVENT_OFS1);\
-							   } while (0)
+#define OS_WAIT_SINGLE_EVENT(x,timeout, cb)    do {\
+                                os_wait_event(running_tid,x,1,timeout, cb);\
+                                OS_SCHEDULE(EVENT_OFS1);\
+                               } while (0)
 
 
 
 
 
 
-#define OS_WAIT_MULTIPLE_EVENTS( waitAll, args...)	do {\
-								os_wait_multiple(waitAll, args, NO_EVENT);\
-								OS_SCHEDULE(EVENT_OFS2);\
-							   } while (0)
+#define OS_WAIT_MULTIPLE_EVENTS( waitAll, args...)    do {\
+                                os_wait_multiple(waitAll, args, NO_EVENT);\
+                                OS_SCHEDULE(EVENT_OFS2);\
+                               } while (0)
 
 
 
 
 
 
-#define OS_SIGNAL_EVENT(event)	do {\
-								os_signal_event(event);\
-								os_event_set_signaling_tid( event, running_tid );\
-								OS_SCHEDULE(EVENT_OFS3);\
-								} while (0)
+#define OS_SIGNAL_EVENT(event)    do {\
+                                os_signal_event(event);\
+                                os_event_set_signaling_tid( event, running_tid );\
+                                OS_SCHEDULE(EVENT_OFS3);\
+                                } while (0)
 
 
 
 
-#define OS_INT_SIGNAL_EVENT(event)	do {\
-									os_signal_event(event);\
-									os_event_set_signaling_tid( event, ISR_TID );\
-									} while (0)
+#define OS_INT_SIGNAL_EVENT(event)    do {\
+                                    os_signal_event(event);\
+                                    os_event_set_signaling_tid( event, ISR_TID );\
+                                    } while (0)
 
 #define OS_GET_TASK_TIMEOUT_VALUE()  os_task_timeout_get(running_tid)
 

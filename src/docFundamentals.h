@@ -1,18 +1,18 @@
 /** @file docFundamentals.h
-<b> Introduction </b> @n 
+<b> Introduction </b> @n
 cocoOS is a free, open source, cooperative task scheduler, based on coroutines. @n
 
 Task procedures scheduled by cooperative kernels are so called RTC's, run to completion tasks.
-They execute from the first line of the procedure to the last line. The use of coroutines enables 
+They execute from the first line of the procedure to the last line. The use of coroutines enables
 us to implement task procedures that does not have to execute all the way down to the last line of
-code. Instead execution can end in the middle e.g waiting for a semaphore to be released. 
-When execution is resumed, it continues at that line. @n @n 
+code. Instead execution can end in the middle e.g waiting for a semaphore to be released.
+When execution is resumed, it continues at that line. @n @n
 
 With coroutines, this can be done without having to save the complete task context when switching
 to another task.
 Also, task procedures can be outlined in the same style as when using a traditional preemptive RTOS.
 
-cocoOS is extremely portable to any target which makes it a perfect choice during early phases of 
+cocoOS is extremely portable to any target which makes it a perfect choice during early phases of
 the development when which OS to use is still an open issue.
 
 
@@ -34,23 +34,23 @@ For instance, on a 32 bit system:
 typedef uint32_t Mem_t;
 
 <b>System setup - application main function </b> @n
-As usual you have to setup your system, ports, clocks etc in the beginning of your main function. 
-After setting up the system, you start the OS setup by calling os_init() and then create all tasks, 
+As usual you have to setup your system, ports, clocks etc in the beginning of your main function.
+After setting up the system, you start the OS setup by calling os_init() and then create all tasks,
 semaphores and events. Finally you places a call to os_start() and the application starts.
 @n @n
 @code
 int main(void) {
   /* Setup ports, clock... */
   system_init();
-  
+
   os_init();
-  
+
   /* Create kernel objects */
   task_create( myTaskProc, 0, 1, NULL, 0, 0 );
   mySem = sem_bin_create( 1 );
-  
+
   os_start();
-  
+
   /* Will never end up here */
   return 0;
 }
@@ -59,13 +59,13 @@ int main(void) {
 
 This is the preferred order of initialization. It is crucial that the clock tick is not started before the tasks
 are created and the kernel is initialized. The os_start() calls the macro os_enable_interrupts() which can be defined
-to start the clock tick driving the OS.  
+to start the clock tick driving the OS.
 
 <b>Time </b>@n
 cocoOS keeps track of time by counting ticks and you must feed the counting with a call to os_tick() periodically
 from the clock tick ISR.
 
-A system of one main clock and several sub clocks is used in cocoOS. The main clock is typically realized 
+A system of one main clock and several sub clocks is used in cocoOS. The main clock is typically realized
 using one of the hardware timers within your target microcontroller which calls the os_tick() function that
 decrements the timers used for task_wait(), msg_post_in() and msg_post_every().
 If your application does not need more than a single time base, the main clock fed by the os_tick() call is
@@ -82,12 +82,12 @@ could be a task that should be run after 64 bytes has been received on the UART.
 calling task_wait_id( 1, 64 ). And in the UART rx ISR os_sub_tick(1) is called for each received character.
 
 <b>Tasks </b>@n
-An application is built up by a number of tasks. Each task is a associated with a (preferably short) 
+An application is built up by a number of tasks. Each task is a associated with a (preferably short)
 procedure with a well defined purpose. The execution of the tasks, is managed by the os kernel, by letting
 the highest priority task among all execution ready tasks to execute. All tasks have to make at least
 one blocking call to a sheduling kernel function. This gives lower priority tasks a chance to execute.
- 
-The task procedure must enclose its code with the task_open() and task_close() macros, as shown below. 
+
+The task procedure must enclose its code with the task_open() and task_close() macros, as shown below.
 Several tasks can use the same task procedure. This is done by giving the same procedure as argument when
 creating the tasks.
 
@@ -118,23 +118,23 @@ static void hello_task(void) {
 int main(void) {
   /* Setup ports, clock... */
   system_init();
-  
+
   /* Create kernel objects */
   task_create( hello_task, 0, 1, NULL, 0, 0 );
-  
+
   os_init();
   clock_start();
   os_start();
-  
+
   /* Will never end up here */
   return 0;
 }
 @endcode
 
 <b>Scheduling</b>@n
-When a task has finished it gives the CPU control to another task by calling one of the scheduling 
+When a task has finished it gives the CPU control to another task by calling one of the scheduling
 macros:
- 
+
     - task_wait()
     - event_wait()
     - event_wait_timeout()
@@ -144,10 +144,10 @@ macros:
     - sem_signal()
     - msg_post()
     - msg_post_in()
-    - msg_post_every()	
+    - msg_post_every()
     - msg_receive()
-    
-Normally the scheduler will give the cpu to the highest priority task ready for execution. It is possible to 
+
+Normally the scheduler will give the cpu to the highest priority task ready for execution. It is possible to
 choose a round robin scheduling algorithm by putting the following line in os_defines.h:@n
 #define ROUND_ROBIN
 

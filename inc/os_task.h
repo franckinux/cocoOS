@@ -32,7 +32,7 @@
  * This file is part of the cocoOS operating system.
  * Author: Peter Eckstrand <info@cocoos.net>
  */
- 
+
 
 #ifndef OS_TASK_H__
 #define OS_TASK_H__
@@ -53,7 +53,7 @@ typedef enum {
     WAITING_SEM,
     WAITING_TIME,
     WAITING_EVENT,
-	WAITING_EVENT_TIMEOUT,
+    WAITING_EVENT_TIMEOUT,
     READY,
     RUNNING,
     KILLED
@@ -64,21 +64,21 @@ typedef enum {
 #define TASK_OFS2    31000
 
 #define OS_SUSPEND_TASK( id )    do {\
-								        os_task_suspend( id );\
+                                        os_task_suspend( id );\
                                         if ( id == running_tid ) {\
                                             OS_SCHEDULE(TASK_OFS1);\
                                         }\
-							  	    } while (0)
+                                      } while (0)
 
 
 
 
-#define OS_RESUME_TASK( id )		do {\
-								        os_task_resume( id );\
+#define OS_RESUME_TASK( id )        do {\
+                                        os_task_resume( id );\
                                         if ( id == running_tid ) {\
                                             OS_SCHEDULE(TASK_OFS2);\
                                         }\
-							  	    } while (0)
+                                      } while (0)
 
 
 void os_task_init(void);
