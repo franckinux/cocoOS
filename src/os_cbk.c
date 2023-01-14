@@ -33,20 +33,17 @@
  * Author: Peter Eckstrand <info@cocoos.net>
  */
 
-
 #include "cocoos.h"
 
-/*********************************************************************************/
-/*  void os_cbkSleep( void )    */
+/*******************************************************************************/
+/*  void os_cbkSleep(void)                                                     */
 /**
-*   Callback called by the os kernel when all tasks are in waiting state. Here you
-*   can put the MCU to low power mode. Remember to keep the clock running so we can
-*	wake up from sleep.
-*
-*
-*
+*   Callback called by the os kernel when all tasks are in waiting state. Here
+*   you can put the MCU to low power mode. Remember to keep the clock running
+*   so we can wake up from sleep.
 */
-/*********************************************************************************/
-void __attribute__((weak)) os_cbkSleep( void ) {
+/*******************************************************************************/
+void __attribute__((weak)) os_cbkSleep(void)
+{
     /* Enter low power mode here */
 }

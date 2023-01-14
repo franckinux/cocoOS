@@ -26,9 +26,9 @@ Getting Started
 To setup cocoOS you have to define 4 constants in `os_defines.h`. These are:
 
     - `N_TASKS`: maximum number of tasks;
-    - `N_QUEUES:` maxmimum number of message queues;
-    - `N_SEMAPHORES:` maximum number of semaphores;
-    - `N_EVENTS:` maximum numer of events.
+    - `N_QUEUES`: maximum number of message queues;
+    - `N_SEMAPHORES`: maximum number of semaphores;
+    - `N_EVENTS`: maximum numer of events.
 
 Allowed range for these constants is 0-254. These constants sets the maximum
 value for the number of used ojects of the specified types. It is allowed to use

@@ -33,7 +33,6 @@
  * Author: Peter Eckstrand <info@cocoos.net>
  */
 
-
 #include "cocoos.h"
 #include "stdarg.h"
 /** @file os_event.c Event source file*/
@@ -41,34 +40,36 @@
 
 /* Event type */
 typedef struct {
-		uint8_t id;
-		uint8_t signaledByTid;
-		} Event_t;
-
+    uint8_t id;
+    uint8_t signaledByTid;
+} Event_t;
 
 
 /* Event list */
-#if( N_TOTAL_EVENTS > 0 )
-static Event_t eventList[ N_TOTAL_EVENTS ];
+#if (N_TOTAL_EVENTS > 0)
+static Event_t eventList[N_TOTAL_EVENTS];
 
 /* Keeping track of number of created events */
 static Evt_t nEvents;
 static Evt_t lastSignaledEvent = NO_EVENT;
 #endif
 
-void os_event_init(void) {
-#if( N_TOTAL_EVENTS > 0 )
+void os_event_init(void)
+{
+#if (N_TOTAL_EVENTS > 0)
     nEvents = 0;
 #endif
 }
 
-/*********************************************************************************/
-/*  Evt_t event_create()                                              *//**
+/*******************************************************************************/
+/*  Evt_t event_create(void)                                                   */
+/**
 *
 *   Creates an event.
 *
 *   @return Returns an event.
-*   @remarks \b Usage: @n An event is created by declaring a variable of type Evt_t and then
+*   @remarks \b Usage: @n
+*   An event is created by declaring a variable of type Evt_t and then
 *   assigning the event_create() return value to that variable.
 *
 *   @code
@@ -76,26 +77,28 @@ void os_event_init(void) {
 *   myEvent = event_create();
 *   @endcode
 *
-*		 */
-/*********************************************************************************/
-Evt_t event_create( void ) {
-    #if( N_TOTAL_EVENTS > 0 )
-	os_assert( nEvents < N_TOTAL_EVENTS );
+*/
+/*******************************************************************************/
+Evt_t event_create(void)
+{
+#if (N_TOTAL_EVENTS > 0)
+    os_assert(nEvents < N_TOTAL_EVENTS);
 
-    eventList[ nEvents ].id = nEvents;
-    eventList[ nEvents ].signaledByTid = NO_TID;
+    eventList[nEvents].id = nEvents;
+    eventList[nEvents].signaledByTid = NO_TID;
 
-	++nEvents;
+    ++nEvents;
 
-	return nEvents - 1;
-    #else
+    return nEvents - 1;
+#else
     return 0;
-    #endif
+#endif
 }
 
 
-/*********************************************************************************/
-/*  uint8_t event_signaling_taskId_get( ev )                                              *//**
+/*******************************************************************************/
+/*  uint8_t event_signaling_taskId_get(ev)                                     */
+/**
 *
 *   Gets the Task Id of the task that signaled the event.
 *
@@ -103,102 +106,122 @@ Evt_t event_create( void ) {
 *   @return Id of task that signaled the event.
 *   @return NO_TID if a timeout occurred before the event was signaled.
 *
-*   @remarks \b Usage: @n A task can make a call to this function when it has resumed
-*   execution after waiting for an event to find out which other task signaled the event.
-*
+*   @remarks \b Usage: @n
+*   A task can make a call to this function when it has resumed execution after
+*   waiting for an event to find out which other task signaled the event.
 *
 *   @code
 *   event_wait(event);
 *   signalingTask = event_signaling_taskId_get(event);
-*   if ( signalingTask == Task2_id ) {
+*   if (signalingTask == Task2_id) {
 *     ...
 *   }
 *   @endcode
 *
-*		 */
-/*********************************************************************************/
-uint8_t event_signaling_taskId_get( Evt_t ev ) {
-#if( N_TOTAL_EVENTS > 0 )
-	return eventList[ ev ].signaledByTid;
+*/
+/*******************************************************************************/
+uint8_t event_signaling_taskId_get(Evt_t ev)
+{
+#if (N_TOTAL_EVENTS > 0)
+    return eventList[ev].signaledByTid;
 #else
+    UNUSED(ev);
     return 0;
 #endif
 }
 
-/*********************************************************************************/
-/*  Evt_t event_last_signaled_get(void)                                              *//**
+
+/*******************************************************************************/
+/*  Evt_t event_last_signaled_get(void)                                        */
+/**
 *
 *   Gets the last signaled event
 *
 *   @return Last signaled event
 *
-*   @remarks \b Usage: @n Used when waiting for multiple events, to find out which
-*   event was signaled.
-*
+*   @remarks \b Usage: @n
+*   Used when waiting for multiple events, to find out which event was signaled.
 *
 *   @code
 *   event_wait_multiple(0, event1, event2);
 *   Evt_t lastEvt = event_last_signaled_get();
-*   if ( lastEvt == event1 ) {
+*   if (lastEvt == event1) {
 *     ...
 *   }
 *   @endcode
 *
-*		 */
-/*********************************************************************************/
-Evt_t event_last_signaled_get(void) {
-#if( N_TOTAL_EVENTS > 0 )
-	return lastSignaledEvent;
+*/
+/*******************************************************************************/
+Evt_t event_last_signaled_get(void)
+{
+#if (N_TOTAL_EVENTS > 0)
+    return lastSignaledEvent;
 #else
     return NO_EVENT;
 #endif
 }
 
 
-void os_wait_event(uint8_t tid, Evt_t ev, uint8_t waitSingleEvent, uint32_t timeout, void (*cb)(void)) {
-#if( N_TOTAL_EVENTS > 0 )
-    if ( ev < nEvents ) {
-        eventList[ ev ].signaledByTid = NO_TID;
-        os_task_wait_event( tid, ev, waitSingleEvent, timeout );
+void os_wait_event(
+    uint8_t tid, Evt_t ev, uint8_t waitSingleEvent, uint32_t timeout,
+    void (*cb)(void)
+) {
+#if (N_TOTAL_EVENTS > 0)
+    if (ev < nEvents) {
+        eventList[ev].signaledByTid = NO_TID;
+        os_task_wait_event(tid, ev, waitSingleEvent, timeout);
         if (cb) {
-          cb();
+            cb();
         }
     }
+#else
+    UNUSED(tid);
+    UNUSED(ev);
+    UNUSED(waitSingleEvent);
+    UNUSED(timeout);
+    UNUSED(cb);
 #endif
 }
 
 
-void os_signal_event( Evt_t ev ) {
-#if( N_TOTAL_EVENTS > 0 )
-  lastSignaledEvent = ev;
-  os_task_signal_event( ev );
+void os_signal_event(Evt_t ev)
+{
+#if (N_TOTAL_EVENTS > 0)
+    lastSignaledEvent = ev;
+    os_task_signal_event(ev);
+#else
+    UNUSED(ev);
 #endif
 }
 
 
-void os_event_set_signaling_tid( Evt_t ev, uint8_t tid ) {
-#if( N_TOTAL_EVENTS > 0 )
-	eventList[ ev ].signaledByTid = tid;
+void os_event_set_signaling_tid(Evt_t ev, uint8_t tid)
+{
+#if (N_TOTAL_EVENTS > 0)
+    eventList[ev].signaledByTid = tid;
+#else
+    UNUSED(tid);
+    UNUSED(ev);
 #endif
 }
 
 
-void os_wait_multiple( uint8_t waitAll, ...) {
-#if( N_TOTAL_EVENTS > 0 )
-	int event;
-	va_list args;
-	va_start( args, waitAll );
-	os_task_clear_wait_queue( running_tid );
-	event = va_arg( args, int );
+void os_wait_multiple(uint8_t waitAll, ...)
+{
+#if (N_TOTAL_EVENTS > 0)
+    int event;
+    va_list args;
+    va_start(args, waitAll);
+    os_task_clear_wait_queue(running_tid);
+    event = va_arg(args, int);
 
-	do {
-		os_task_wait_event( running_tid, (Evt_t)event, !waitAll,0 );
-		event = va_arg( args, int );
-	} while ( event != NO_EVENT );
+    do {
+        os_task_wait_event(running_tid, Evt_t event, !waitAll, 0);
+        event = va_arg(args, int);
+    } while (event != NO_EVENT);
 
-	va_end(args);
+    va_end(args);
+#else
+    UNUSED(waitAll);
 #endif
 }
-
-
-

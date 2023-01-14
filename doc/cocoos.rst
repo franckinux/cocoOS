@@ -1,5 +1,5 @@
 ====================
-CosoOS documentation
+CocoOS documentation
 ====================
 
 +--------------------+----------+

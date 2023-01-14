@@ -33,7 +33,6 @@
  * Author: Peter Eckstrand <info@cocoos.net>
  */
 
-
 #ifndef _OS_TYPEDEF_H
 #define _OS_TYPEDEF_H
 
@@ -41,11 +40,10 @@
 extern "C" {
 #endif
 
-typedef void (*taskproctype) (void);
+typedef void (*taskproctype)(void);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif
