@@ -216,7 +216,7 @@ void os_wait_multiple(uint8_t waitAll, ...)
     event = va_arg(args, int);
 
     do {
-        os_task_wait_event(running_tid, Evt_t event, !waitAll, 0);
+        os_task_wait_event(running_tid, (Evt_t) event, !waitAll, 0);
         event = va_arg(args, int);
     } while (event != NO_EVENT);
 

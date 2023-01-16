@@ -170,8 +170,8 @@ static uint8_t queue_push(OSQueue_t *queue, Msg_t *msg)
 
     uint16_t msgSz = queue->messageSize;
 
-    uint8_t *src = uint8_t *msg;
-    uint8_t *dst = uint8_t *(Mem_t queue->list + head * msgSz);
+    uint8_t *src = (uint8_t *) msg;
+    uint8_t *dst = (uint8_t *) ((Mem_t) queue->list + head * msgSz);
 
     while (msgSz--) {
         *dst++ = *src++;
@@ -211,7 +211,7 @@ uint8_t os_msg_receive(Msg_t *msg, MsgQ_t queue)
 
     while (found == 0) {
         tail = (tail + 1) % q->size;
-        src = uint8_t *(Mem_t q->list + tail * msgSz);
+        src = (uint8_t *) ((Mem_t) q->list + tail * msgSz);
 
         uint8_t *dst = (uint8_t*)msg;
         while (msgSz--) {
@@ -234,8 +234,8 @@ uint8_t os_msg_receive(Msg_t *msg, MsgQ_t queue)
         /* Put the message back at head position if delay > 0, or if it is a
          * periodic message that timed out */
         if ((!messageTimedOut) || (messagePeriodic && messageTimedOut)) {
-            dst = uint8_t *(Mem_t q->list + q->head * msgSz);
-            src = uint8_t *msg;
+            dst = (uint8_t *) ((Mem_t) q->list + q->head * msgSz);
+            src = (uint8_t *) msg;
 
             while (msgSz--) {
                 *dst++ = *src++;
@@ -272,7 +272,7 @@ void os_msgQ_tick(MsgQ_t queue)
     uint16_t msgSz = q->messageSize;
 
     while (nextMessage != head) {
-        pMsg = Msg_t *(Mem_t q->list + nextMessage * msgSz);
+        pMsg = (Msg_t *) ((Mem_t) q->list + nextMessage * msgSz);
 
         if (pMsg->delay > 0) {
             --(pMsg->delay);
@@ -302,7 +302,7 @@ static uint8_t MsgQAllDelayed(OSQueue_t *q)
     nextMessage = (q->tail + 1) % q->size;
 
     while (nextMessage != head) {
-        pMsg = Msg_t *(Mem_t q->list + (nextMessage * msgSz));
+        pMsg = (Msg_t *) ((Mem_t) q->list + (nextMessage * msgSz));
 
         if (pMsg->delay == 0) {
             result = 0;
