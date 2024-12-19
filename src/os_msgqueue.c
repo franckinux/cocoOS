@@ -97,10 +97,10 @@ MsgQ_t os_msgQ_create(
     nQueues++;
     return nQueues - 1;
 #else
-    UNUSED(buffer);
-    UNUSED(nMessages);
-    UNUSED(msgSize);
-    UNUSED(task_id);
+    (void) buffer;
+    (void) nMessages;
+    (void) msgSize;
+    (void) task_id;
     return 0;
 #endif
 }
@@ -118,7 +118,7 @@ MsgQ_t os_msgQ_find(uint8_t task_id)
         }
     }
 #else
-    UNUSED(task_id);
+    (void) task_id;
 #endif
 
     return NO_QUEUE;
@@ -133,7 +133,7 @@ Evt_t os_msgQ_event_get(MsgQ_t queue)
     }
     return msgQList[queue].change;
 #else
-    UNUSED(queue);
+    (void) queue;
     return NO_EVENT;
 #endif
 }
@@ -150,10 +150,10 @@ uint8_t os_msg_post(Msg_t *msg, MsgQ_t queue, uint32_t delay, uint32_t period)
     msg->reload = period;
     return queue_push(&msgQList[queue].q, msg);
 #else
-    UNUSED(msg);
-    UNUSED(queue);
-    UNUSED(delay);
-    UNUSED(period);
+    (void) msg;
+    (void) queue;
+    (void) delay;
+    (void) period;
     return 0;
 #endif
 }
@@ -253,8 +253,8 @@ uint8_t os_msg_receive(Msg_t *msg, MsgQ_t queue)
 
     return MSG_QUEUE_RECEIVED;
 #else
-    UNUSED(msg);
-    UNUSED(queue);
+    (void) msg;
+    (void) queue;
     return 0;
 #endif
 }
@@ -284,7 +284,7 @@ void os_msgQ_tick(MsgQ_t queue)
 
     }
 #else
-    UNUSED(queue);
+    (void) queue;
 #endif
 }
 

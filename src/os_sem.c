@@ -70,8 +70,8 @@ static Sem_t os_sem_create(uint8_t max, uint8_t initial)
 
     return (nSemaphores - 1);
 #else
-    UNUSED(max);
-    UNUSED(initial);
+    (void) max;
+    (void) initial;
     return 0;
 #endif
 }
@@ -134,7 +134,7 @@ uint8_t os_sem_larger_than_zero(Sem_t sem)
 #if (N_TOTAL_SEMAPHORES > 0)
     return (semList[sem].value > 0);
 #else
-    UNUSED(sem);
+    (void) sem;
     return 0;
 #endif
 }
@@ -147,7 +147,7 @@ void os_sem_decrement(Sem_t sem)
         --semList[sem].value;
     }
 #else
-    UNUSED(sem);
+    (void) sem;
 #endif
 }
 
@@ -159,6 +159,6 @@ void os_sem_increment(Sem_t sem)
         ++semList[sem].value;
     }
 #else
-    UNUSED(sem);
+    (void) sem;
 #endif
 }

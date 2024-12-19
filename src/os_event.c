@@ -125,7 +125,7 @@ uint8_t event_signaling_taskId_get(Evt_t ev)
 #if (N_TOTAL_EVENTS > 0)
     return eventList[ev].signaledByTid;
 #else
-    UNUSED(ev);
+    (void) ev;
     return 0;
 #endif
 }
@@ -175,11 +175,11 @@ void os_wait_event(
         }
     }
 #else
-    UNUSED(tid);
-    UNUSED(ev);
-    UNUSED(waitSingleEvent);
-    UNUSED(timeout);
-    UNUSED(cb);
+    (void) tid;
+    (void) ev;
+    (void) waitSingleEvent;
+    (void) timeout;
+    (void) cb;
 #endif
 }
 
@@ -190,7 +190,7 @@ void os_signal_event(Evt_t ev)
     lastSignaledEvent = ev;
     os_task_signal_event(ev);
 #else
-    UNUSED(ev);
+    (void) ev;
 #endif
 }
 
@@ -200,8 +200,8 @@ void os_event_set_signaling_tid(Evt_t ev, uint8_t tid)
 #if (N_TOTAL_EVENTS > 0)
     eventList[ev].signaledByTid = tid;
 #else
-    UNUSED(tid);
-    UNUSED(ev);
+    (void) tid;
+    (void) ev;
 #endif
 }
 
@@ -222,6 +222,6 @@ void os_wait_multiple(uint8_t waitAll, ...)
 
     va_end(args);
 #else
-    UNUSED(waitAll);
+    (void) waitAll;
 #endif
 }
